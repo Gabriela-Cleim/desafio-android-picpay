@@ -4,7 +4,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.picpay.desafio.android.view.activity.MainActivity
@@ -47,6 +49,10 @@ class MainActivityTest {
 
         launchActivity<MainActivity>().apply {
             // TODO("validate if list displays items returned by server")
+            Thread.sleep(2000)
+
+            onView(withId(R.id.recyclerView))
+                .check(matches(hasDescendant(withText("Eduardo Santos"))))
         }
 
         server.close()
