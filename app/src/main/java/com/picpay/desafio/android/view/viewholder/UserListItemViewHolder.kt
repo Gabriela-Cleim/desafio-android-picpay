@@ -10,10 +10,8 @@ import com.squareup.picasso.Picasso
 
 class UserListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    // Inicializa o binding usando o método bind
     private val binding = ListItemUserBinding.bind(itemView)
 
-    // Liga os dados do usuário às views
     fun bind(user: User) {
 
         binding.name.text = user.name
@@ -24,7 +22,6 @@ class UserListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             .load(user.img)
             .error(R.drawable.ic_round_account_circle)
             .into(binding.picture, object : Callback {
-
                 override fun onSuccess() {
                     binding.progressBar.visibility = View.GONE
                 }

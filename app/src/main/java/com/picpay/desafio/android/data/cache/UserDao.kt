@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.picpay.desafio.android.data.model.User
 
-@Dao
+@Dao // Data Access Object
 interface UserDao {
 
     @Query("SELECT * FROM user")

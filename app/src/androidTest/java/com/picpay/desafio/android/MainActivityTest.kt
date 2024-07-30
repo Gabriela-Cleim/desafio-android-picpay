@@ -52,7 +52,7 @@ class MainActivityTest {
             Thread.sleep(2000)
 
             onView(withId(R.id.recyclerView))
-                .check(matches(hasDescendant(withText("Eduardo Santos"))))
+                .check(matches(hasDescendant(withText("Eduardo Santos")))) //
         }
 
         server.close()

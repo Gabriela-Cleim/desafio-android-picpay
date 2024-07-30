@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.picpay.desafio.android.data.repository.UserRepository
 
-// Cria e fornece instancia do UserViewModel garantindo que receba as dependencias necessarias e o gerenciamento salvo no ViewModel
+//
 class UserViewModelFactory(private val repository: UserRepository, owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null) : AbstractSavedStateViewModelFactory(owner, defaultArgs)  {
 
     @Suppress("UNCHECKED_CAST")

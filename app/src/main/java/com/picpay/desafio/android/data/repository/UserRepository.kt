@@ -10,12 +10,11 @@ import retrofit2.Call
 
 class UserRepository(private val service: PicPayService, private val userDao: UserDao){
 
-    // Método para obter usuários da API
     fun getUsers(): Call<List<User>> {
         return service.getUsers()
     }
 
-    // Método para buscar e cachear usuários
+    //
     suspend fun fetchAndCacheUsers() {
         withContext(Dispatchers.IO) {
 
@@ -31,7 +30,6 @@ class UserRepository(private val service: PicPayService, private val userDao: Us
         }
     }
 
-    // Método para obter usuários cacheados
     fun getCachedUsers(): List<User> {
         return userDao.getUsers()
     }

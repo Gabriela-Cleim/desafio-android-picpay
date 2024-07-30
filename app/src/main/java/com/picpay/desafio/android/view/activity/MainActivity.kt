@@ -1,5 +1,6 @@
 package com.picpay.desafio.android.view.activity
 
+import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -29,20 +30,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-
-    // Inicialização do adapter
     private lateinit var adapter: UserListAdapter
 
-    // Declaração da variável de binding
     private lateinit var binding: ActivityMainBinding
-
-
 
     private val url = "https://609a908e0f5a13001721b74e.mockapi.io/picpay/api/"
 
-    // Inicialização do serviço de API usando Retrofit
+    //
     private val service: PicPayService by lazy {
         Retrofit.Builder()
             .baseUrl(url)
@@ -52,8 +46,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             .create(PicPayService::class.java)
     }
 
-    // Inicialização do banco de dados Room
-    private val database: AppDatabase by lazy {  // Usa lazy para inicializar o banco de dados quando necessário.
+    //
+    private val database: AppDatabase by lazy {
         Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -62,43 +56,36 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             .build()
     }
 
-    // Inicialização do ViewModel
-    private val viewModel: UserViewModel by viewModels {  // Usa viewModels para obter uma instância do ViewModel.
-        UserViewModelFactory(UserRepository(service, database.userDao()), this)  // Passa a fábrica que cria uma instância do ViewModel.
+    private val viewModel: UserViewModel by viewModels {
+        UserViewModelFactory(UserRepository(service, database.userDao()), this)
     }
 
-    override fun onResume() {
-        super.onResume()
 
-        // Inicializa o binding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding.root) //
 
-        // Configuração do RecyclerView
-        adapter = UserListAdapter()  // Cria uma nova instância do adapter.
-        binding.recyclerView.adapter = adapter  // Define o adapter para a RecyclerView.
+        adapter = UserListAdapter()
+        binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-
-
-        // Observadores para o LiveData no ViewModel
-        viewModel.users.observe(this, Observer {  // Observa mudanças na lista de usuários do ViewModel.
-            adapter.users = it  // Atualiza os dados do adapter com a lista de usuários.
+        viewModel.users.observe(this, Observer {
+            adapter.users = it
         })
 
-        viewModel.loading.observe(this, Observer {  // Observa mudanças no estado de carregamento do ViewModel.
-            binding.userListProgressBar.visibility = if (it) View.VISIBLE else View.GONE  // Mostra ou esconde o indicador de carregamento.
+        viewModel.loading.observe(this, Observer {
+            binding.userListProgressBar.visibility = if (it) View.VISIBLE else View.GONE
         })
 
-        viewModel.error.observe(this, Observer {  // Observa mudanças nas mensagens de erro do ViewModel.
-            it?.let { message ->  // Se houver uma mensagem de erro.
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()  // Exibe a mensagem de erro em um Toast.
+        viewModel.error.observe(this, Observer {
+            it?.let { message ->
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         })
 
-        // Buscar usuários ao criar a atividade
-        viewModel.fetchUsers()  // Chama o método do ViewModel para buscar os usuários.
-
-
+        viewModel.fetchUsers() //
     }
+
 }
